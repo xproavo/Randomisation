@@ -1,0 +1,26 @@
+body {
+    font-family: Arial, sans-serif;
+  }
+
+  .chest {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #000;
+    display: inline-block;
+  }
+
+  .open {
+    background-color: #4CAF50;
+    color: white;
+  }
+
+  .closed {
+    background-color: #f44336;
+    color: white;
+  }
+
+  button {
+    margin: 10px;
+    padding: 10px;
+    font-size: 16px;
+  }

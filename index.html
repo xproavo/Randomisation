@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
+  <title>Simulation de Coffres</title>
+
+</head>
+<body>
+
+<div id="chests-container"></div>
+<div id="inventory-container"></div>
+
+<button id="add-chest-btn">Ajouter un coffre</button>
+<button id="reset-btn">Réinitialiser</button>
+
+
+<script src="js/game.js"></script>
+<script>
+
+    function displayGameStatus(chests, playerInventory) {
+        displayChests(chests);
+
+        const inventoryContainer = document.getElementById('inventory-container');
+        inventoryContainer.textContent = `Inventaire du joueur : ${playerInventory.map(item => item.name).join(', ')}`;
+    }
+
+    function displayChests(chests) {
+        const chestsContainer = document.getElementById('chests-container');
+        chestsContainer.innerHTML = '';
+
+        chests.forEach(chest => {
+            const chestDiv = document.createElement('div');
+            chestDiv.classList.add('chest', chest.isOpen ? 'open' : 'closed');
+            chestDiv.textContent = chest.keysNecessary.length > 0 ? `Conditions : ${chest.keysNecessary.map(key => key.name).join(', ')}` : 'Aucune condition nécessaire';
+            chestsContainer.appendChild(chestDiv);
+        });
+    }
+
+    function addChest() {
+        addNewChest();
+        displayGameStatus(chests, player.inventory);
+    }
+
+    function openChest(chestIndex) {
+        const openedItems = chests[chestIndex].OpenChest(player.inventory);
+
+        if (openedItems) {
+            player.AddToInventory(openedItems);
+            displayGameStatus(chests, player.inventory);
+        }
+    }
+
+    function reset() {
+        play() 
+        displayGameStatus(chests, player.inventory);
+    }
+
+    reset();
+
+    const addChestBtn = document.getElementById('add-chest-btn');
+    addChestBtn.addEventListener('click', addChest);
+
+    const resetBtn = document.getElementById('reset-btn');
+    resetBtn.addEventListener('click', reset);
+
+    const chestsContainer = document.getElementById('chests-container');
+    chestsContainer.addEventListener('click', function (event) {
+        const target = event.target;
+        const chestIndex = Array.from(chestsContainer.children).indexOf(target);
+        if (target.classList.contains('chest') && chestIndex >= 0) {
+            openChest(chestIndex);
+        }
+    });
+</script>
+
+</body>
+</html>
