@@ -22,6 +22,15 @@ class Chest{
     OpenChest(_inventory){
         if(this.CanOpen(_inventory)){
             this.isOpen = true;
+
+            // Supprimer les clés nécessaires de l'inventaire du joueur
+            this.keysNecessary.forEach(key => {
+            const index = _inventory.indexOf(key);
+            if (index !== -1) {
+                _inventory.splice(index, 1);
+            }
+        });
+
             return this.item;
         }
         console.log("Le coffre ne peut pas etre ouvert.")
