@@ -33,7 +33,16 @@
         chests.forEach(chest => {
             const chestDiv = document.createElement('div');
             chestDiv.classList.add('chest', chest.isOpen ? 'open' : 'closed');
-            chestDiv.textContent = chest.keysNecessary.length > 0 ? `Conditions : ${chest.keysNecessary.map(key => key.name).join(', ')}` : 'Aucune condition nécessaire';
+
+            const chestTitle = document.createElement('h4');
+            chestTitle.textContent = chest.name;
+            chestDiv.appendChild(chestTitle);
+            
+            const chestContent = document.createElement('p');
+            chestContent.textContent = chest.keysNecessary.length > 0 ? `Conditions : ${chest.keysNecessary.map(key => key.name).join(', ')}` : 'Aucune condition nécessaire';
+            chestDiv.appendChild(chestContent);
+
+
             chestsContainer.appendChild(chestDiv);
         });
     }
@@ -44,6 +53,7 @@
     }
 
     function openChest(chestIndex) {
+
         const openedItems = chests[chestIndex].OpenChest(player.inventory);
 
         if (openedItems) {
