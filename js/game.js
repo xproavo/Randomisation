@@ -140,8 +140,6 @@ function AssignItemToChest2 (){
         on regarde ensuite quelle clé permet d’ouvrir le coffre D et on range cette clé dans un nouveau coffre aléatoire (disons F) et on retire le coffre D de la liste
         la liste n’est toujours composée que des coffres dont on a pas encore rangé la clé dans un autre
         on répète cette manipulation jusqu'à ce que la liste de coffre soit vide, une fois qu’elle est vide cela veut dire que tous les coffres contiennent maintenant une clé, sauf le 1er coffre dans lequel on range alors la clé qui permet d’ouvrir le coffre dans lequel on a rangé une clé et retiré de la liste en dernier.
-
-            
     */
     
 
@@ -202,12 +200,12 @@ function GenerateChest(_nb){
 }
 
 function GenerateItem(_nb){
-    keyList = [new Item("cle 1"), new Item("cle 2"), new Item("cle 3"), new Item("cle 4"), new Item("cle 5"), new Item("cle 6"), new Item("cle 7"), new Item("cle 8"), new Item("cle 9")]
-    itemList = []
+    keyList = [new Item("cle A"), new Item("cle B"), new Item("cle C"), new Item("cle D"), new Item("cle E"), new Item("cle F"), new Item("cle G"), new Item("cle H"), new Item("cle I")];
+    itemList = [];
     for (let index = 0; index < _nb; index++) {
-        itemList.push(keyList[GetRandomNumber(keyList.length)])
+        itemList.push(keyList[GetRandomNumber(keyList.length)]);
     }
-    return itemList
+    return itemList;
 }
 
 function addNewChest(){
