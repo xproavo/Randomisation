@@ -229,6 +229,6 @@ let player;
 let chests; 
 let items;
 let solution;
+let seed;
 
-play()
-
+play();
