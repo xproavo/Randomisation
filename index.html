@@ -14,9 +14,12 @@
 
 <button id="add-chest-btn">Ajouter un coffre</button>
 <button id="reset-btn">Réinitialiser</button>
+<input type="text" name="seed" id="seed" placeholder="Seed">
 
 
+<script src="https://unpkg.com/seedrandom@3.0.5/seedrandom.min.js"></script>
 <script src="js/game.js"></script>
+
 <script>
 
     function displayGameStatus(chests, playerInventory) {
@@ -33,7 +36,16 @@
         chests.forEach(chest => {
             const chestDiv = document.createElement('div');
             chestDiv.classList.add('chest', chest.isOpen ? 'open' : 'closed');
-            chestDiv.textContent = chest.keysNecessary.length > 0 ? `Conditions : ${chest.keysNecessary.map(key => key.name).join(', ')}` : 'Aucune condition nécessaire';
+
+            const chestTitle = document.createElement('h4');
+            chestTitle.textContent = chest.name;
+            chestDiv.appendChild(chestTitle);
+            
+            const chestContent = document.createElement('p');
+            chestContent.textContent = chest.keysNecessary.length > 0 ? `Conditions : ${chest.keysNecessary.map(key => key.name).join(', ')}` : 'Aucune condition nécessaire';
+            chestDiv.appendChild(chestContent);
+
+
             chestsContainer.appendChild(chestDiv);
         });
     }
@@ -44,6 +56,7 @@
     }
 
     function openChest(chestIndex) {
+
         const openedItems = chests[chestIndex].OpenChest(player.inventory);
 
         if (openedItems) {
@@ -53,7 +66,10 @@
     }
 
     function reset() {
-        play() 
+        let inputSeed = document.getElementById('seed');
+        seed = inputSeed.value;
+
+        play();
         displayGameStatus(chests, player.inventory);
     }
 
