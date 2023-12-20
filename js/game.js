@@ -1,4 +1,3 @@
-Math.seedrandom('MySeed');
 
 
 class Item{
@@ -96,6 +95,13 @@ class Player{
         }
         this.inventory.push(_items);
     }
+}
+
+function SetSeed(){
+    if (seed.trim() === '') {
+        seed = Date.now();
+    }
+    Math.seedrandom(seed);
 }
 
 function GetRandomNumber(max){
@@ -220,6 +226,8 @@ function addNewChest(){
 }
 
 function play() {
+    SetSeed();
+
     player = new Player("oui");
     chests = GenerateChest(10);
     items = GenerateItem(10);
@@ -232,6 +240,6 @@ let player;
 let chests; 
 let items;
 let solution;
-let seed;
+let seed = '';
 
 play();
