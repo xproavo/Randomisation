@@ -1,3 +1,6 @@
+Math.seedrandom('MySeed');
+
+
 class Item{
     constructor(_name, _type){ //donne un nome a l'item
         this.name = _name;
