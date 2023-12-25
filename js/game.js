@@ -132,20 +132,22 @@ function AssignItemToChest (chests, items){
 }
 
 function AssignItemToChest2 (){
+    solution = [];
     let copyChest = [...items];
     copyChest = chests.slice(1);
 
     
    let last_items = copyChest[copyChest.length -1]; 
-   solution.push(last_items);
    
-    for (let i = copyChest.length; 0 < i; i--) {
-
-        
-        let fisrt_element = last_items.keysNecessary;[0]; 
-        
-        if (copyChest.length == 1) {
-            chests[0].AddItem(fisrt_element);
+   for (let i = copyChest.length; 0 < i; i--) {
+       
+       solution.push(last_items);
+       
+       let fisrt_element = last_items.keysNecessary;[0]; 
+       
+       if (copyChest.length == 1) {
+           chests[0].AddItem(fisrt_element);
+           solution.push(chests[0]);
         }else{   
             let coffre_aleatoire =  copyChest[GetRandomNumber(copyChest.length)];
             
