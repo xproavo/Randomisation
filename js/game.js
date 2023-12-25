@@ -221,8 +221,8 @@ function play() {
     SetSeed();
     
     player = new Player("oui");
-    chests = GenerateChest(10);
-    items = GenerateItem(10);
+    chests = GenerateChest(nbchest);
+    items = GenerateItem(nbchest);
     //AssignItemToChest(chests, items);
     AssignChestCondition(); 
     AssignItemToChest2();
@@ -233,5 +233,6 @@ let chests;
 let items;
 let solution = [];
 let seed = '';
+let nbchest = 10;
 
 play();

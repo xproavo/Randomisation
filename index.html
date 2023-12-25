@@ -14,6 +14,7 @@
 
 <button id="add-chest-btn">Ajouter un coffre</button>
 <button id="reset-btn">Réinitialiser</button>
+<input type="number" name="nbchest" id="nbchest" value="10">
 <input type="text" name="seed" id="seed" placeholder="Seed">
 
 <div ><ul id="solution-container"></ul></div>
@@ -85,6 +86,9 @@
     function reset() {
         let inputSeed = document.getElementById('seed');
         seed = inputSeed.value;
+
+        let nbchestcontainer = document.getElementById('nbchest');
+        nbchest = nbchestcontainer.value;
 
         play();
         displayGameStatus(chests, player.inventory);
