@@ -58,9 +58,14 @@
     function openChest(chestIndex) {
 
         const openedItems = chests[chestIndex].OpenChest(player.inventory);
+        console.log(openedItems);
 
         if (openedItems) {
-            player.AddToInventory(openedItems);
+            openedItems.forEach(element => {
+                player.AddToInventory(element);
+            });
+
+
             displayGameStatus(chests, player.inventory);
         }
     }

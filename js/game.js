@@ -25,22 +25,22 @@ class Chest{
     OpenChest(_inventory){
         if(this.CanOpen(_inventory) && this.isOpen === false){
             this.isOpen = true;
-
+            
             // Supprimer les clés nécessaires de l'inventaire du joueur
             this.keysNecessary.forEach(key => {
-            const index = _inventory.indexOf(key);
-            if (index !== -1) {
-                _inventory.splice(index, 1);
-            }
-        });
-
+                const index = _inventory.indexOf(key);
+                if (index !== -1) {
+                    _inventory.splice(index, 1);
+                }
+            });
+            
             return this.item;
         }
         console.log("Le coffre ne peut pas etre ouvert.")
         this.PrintCondition();
         return null;
     }
-
+    
     CanOpen(_inventory){
         if(this.keysNecessary.length > 0){
             let haveKeys = 0;
@@ -53,15 +53,15 @@ class Chest{
         }
         return true;
     }
-
+    
     HasItems(){
         return this.item.length > 0;
     }
-
+    
     HasItem(_item){
         return this.item.includes(_item);
     }
-
+    
     PrintCondition(){
         if(this.keysNecessary.length === 0){
             console.log("Aucune condition n'est necessaire pour ouvrir ce coffre")
@@ -72,7 +72,7 @@ class Chest{
             });
         }
     }    
-
+    
     PrintContent(){
         console.log("Contenu du coffre : " + this.items.map(item => item.name).join(', '));
     }
@@ -87,10 +87,12 @@ class Player{
     GetInventory(){
         return this.inventory;
     }
-
+    
     AddToInventory(_items){
         if(Array.isArray(_items)){
-            this.inventory.push(..._items);
+            _items.forEach(element => {
+                this.inventory.push(element);
+            });
             return;
         }
         this.inventory.push(_items);
@@ -132,58 +134,48 @@ function AssignItemToChest (chests, items){
 function AssignItemToChest2 (){
     let copyChest = [...items];
     copyChest = chests.slice(1);
-    
-    /*
-    (coffre A).
-        On commence par le dernier coffre, Coffre J (dernier dans la liste des coffres) : 
-        on regarde quelle clé permet d’ouvrir le J puis on range cette clé dans un coffre aléatoire (disons le D), on retire alors le coffre J de la liste
-        on regarde ensuite quelle clé permet d’ouvrir le coffre D et on range cette clé dans un nouveau coffre aléatoire (disons F) et on retire le coffre D de la liste
-        la liste n’est toujours composée que des coffres dont on a pas encore rangé la clé dans un autre
-        on répète cette manipulation jusqu'à ce que la liste de coffre soit vide, une fois qu’elle est vide cela veut dire que tous les coffres contiennent maintenant une clé, sauf le 1er coffre dans lequel on range alors la clé qui permet d’ouvrir le coffre dans lequel on a rangé une clé et retiré de la liste en dernier.
-    */
-    
 
-    for (let i = copyChest.length; i > 0; i--) {
+    
+   let last_items = copyChest[copyChest.length -1]; 
+   solution.push(last_items);
+   
+    for (let i = copyChest.length; 0 < i; i--) {
 
-        if (copyChest.length === 1 ) {
-            let itemPlace = copyChest[0].keysNecessary;
-            itemPlace.forEach(element => {
-                chests[0].AddItem(element);
-            });
-            solution.push(chests[0].name);
+        
+        let fisrt_element = last_items.keysNecessary;[0]; 
+        
+        if (copyChest.length == 1) {
+            chests[0].AddItem(fisrt_element);
+        }else{   
+            let coffre_aleatoire =  copyChest[GetRandomNumber(copyChest.length)];
             
-        } else {
-            let indexChest = GetRandomNumber(copyChest.length);
-            let itemPlace = copyChest[indexChest].keysNecessary;
             
-            let indexChestPlace = GetRandomNumber(copyChest.length);
-            while (indexChest === indexChestPlace || copyChest[indexChestPlace].item.length > 0) {
-                indexChestPlace = GetRandomNumber(copyChest.length);
+            while (copyChest == coffre_aleatoire ) {
+                coffre_aleatoire =  copyChest[GetRandomNumber(copyChest.length)];
             }
             
-            itemPlace.forEach(element => {
-                copyChest[indexChestPlace].AddItem(element);
-            });
+            coffre_aleatoire.AddItem(fisrt_element);
             
-            solution.push(copyChest[0].name);
-
-            copyChest.splice(indexChest, 1);
+            //retirer le coffre de la liste
+            let index = copyChest.indexOf(last_items);
+            copyChest.splice(index, 1);
+            
+            last_items = coffre_aleatoire;
         }
     }
-
 }
 
 function AssignChestCondition(){
-
+    
     let copyChest = [...items];
     copyChest = chests.slice(1);
     let copyItem = [...items];
-
+    
     for (let i = copyChest.length; i > 0; i--) {
         
         let indexChest = GetRandomNumber(copyChest.length);
         let indexItem = GetRandomNumber(copyItem.length);
-
+        
         copyChest[indexChest].AddCondition(copyItem[indexItem]);
         
         copyChest.splice(indexChest, 1);
@@ -192,11 +184,11 @@ function AssignChestCondition(){
 }
 
 function GenerateChest(_nb){
-    chestList = []
+    let  chestList = []
     for (let index = 0; index < _nb; index++) {
         chestList.push(new Chest("Coffre n° " + (index + 1).toString()));
     }
-    return chestList
+    return chestList;
 }
 
 function GenerateItem(_nb){
@@ -213,31 +205,31 @@ function addNewChest(){
     const randomItemIndex = GetRandomNumber(items.length);
     const randomItem = items[randomItemIndex];
     newChest.AddItem(randomItem);
-
+    
     const randomConditionIndex = GetRandomNumber(items.length);
     const randomCondition = items[randomConditionIndex];
     newChest.AddCondition(randomCondition);
-
+    
     chests.push(newChest);
-
+    
     console.log(chests)
 }
 
 function play() {
     SetSeed();
-
+    
     player = new Player("oui");
     chests = GenerateChest(10);
     items = GenerateItem(10);
-    AssignItemToChest(chests, items);
+    //AssignItemToChest(chests, items);
     AssignChestCondition(); 
-    //AssignItemToChest2();
+    AssignItemToChest2();
 }
 
 let player; 
 let chests; 
 let items;
-let solution;
+let solution = [];
 let seed = '';
 
 play();
