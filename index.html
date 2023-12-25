@@ -14,8 +14,10 @@
 
 <button id="add-chest-btn">Ajouter un coffre</button>
 <button id="reset-btn">Réinitialiser</button>
+<input type="number" name="nbchest" id="nbchest" value="10">
 <input type="text" name="seed" id="seed" placeholder="Seed">
 
+<div ><ul id="solution-container"></ul></div>
 
 <script src="https://unpkg.com/seedrandom@3.0.5/seedrandom.min.js"></script>
 <script src="js/game.js"></script>
@@ -27,6 +29,18 @@
 
         const inventoryContainer = document.getElementById('inventory-container');
         inventoryContainer.textContent = `Inventaire du joueur : ${playerInventory.map(item => item.name).join(', ')}`;
+        
+        
+        const solutionContainer = document.getElementById('solution-container');
+        solutionContainer.innerHTML = '';
+
+        //for
+        for (let index = 0; index < solution.length; index++) {
+            
+            const solLi = document.createElement('li');
+            solLi.textContent = solution[solution.length - index -1].name;
+            solutionContainer.appendChild(solLi);
+        }
     }
 
     function displayChests(chests) {
@@ -60,7 +74,11 @@
         const openedItems = chests[chestIndex].OpenChest(player.inventory);
 
         if (openedItems) {
-            player.AddToInventory(openedItems);
+            openedItems.forEach(element => {
+                player.AddToInventory(element);
+            });
+
+
             displayGameStatus(chests, player.inventory);
         }
     }
@@ -68,6 +86,9 @@
     function reset() {
         let inputSeed = document.getElementById('seed');
         seed = inputSeed.value;
+
+        let nbchestcontainer = document.getElementById('nbchest');
+        nbchest = nbchestcontainer.value;
 
         play();
         displayGameStatus(chests, player.inventory);
